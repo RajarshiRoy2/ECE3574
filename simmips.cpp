@@ -1,7 +1,9 @@
 #include <vector>
 #include <string>
+#include <thread>
 #include <iostream>
 #include <cstdlib>
+#include <mutex>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -9,12 +11,35 @@
 #include "VirtualMachine.hpp"
 #include "virtual_machine_gui.hpp"
 #include "parser.hpp"
+#include "vector.hpp"
 using namespace std;
 
 bool is_file_exist(string fileName)
 {
 	ifstream infile(fileName);
 	return infile.good();
+}
+OutputVector<string> vec;
+VirtualMachine machine;
+int n1 = 0;
+void run_function()
+{
+	int mode = 0;
+	
+	int n = machine.instructions.size();
+	while (machine.status.empty())
+	{
+		n1++;
+		machine.executing_instr();
+		if (n1 >= n)
+			break;
+		if (vec.size() != 0)
+		{
+			vec.the_vec.clear();
+			break;
+		}
+	}
+	
 }
 
 int main(int argc, char *argv[])
@@ -71,7 +96,7 @@ int main(int argc, char *argv[])
 		}
 		istringstream iss(sum);
 		TokenList tl1 = tokenize(iss);
-		VirtualMachine machine;
+
 		machine.setting_data_values(tl1);
 		sum.clear();
 		while (getline(inFile, input))
@@ -84,13 +109,15 @@ int main(int argc, char *argv[])
 		machine.saving_instr(tl11);
 		inFile.close();
 
+		
+
 		while (true)
 		{
 			cerr << "simmips> ";
 			getline(cin, value);
 			if (value == "step"&&machine.status.empty())
 			{
-
+				n1++;
 				machine.executing_instr();
 				cerr << "0x" << setfill('0') << setw(8) << hex << machine.line2 << endl;
 			}
@@ -146,10 +173,20 @@ int main(int argc, char *argv[])
 							cerr << "0x" << setfill('0') << setw(8) << hex << machine.line2 << endl;
 						else
 							cerr << "Error Not a valid register..." << endl;
-
 					}
+					
 					else
 						cerr << "Error : unknown command.\n";
+				}
+				else if (value == "run")
+				{
+					
+					thread t1(&run_function);
+					t1.detach();
+				}
+				else if (value == "break")
+				{
+					vec.append("break");
 				}
 				else
 					cerr << "Error here.\n";
