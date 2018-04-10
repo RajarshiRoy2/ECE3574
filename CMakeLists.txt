@@ -4,7 +4,9 @@ project(M4 CXX)
 # add source for any additional non-gui modules here
 set(LIB_SOURCE
   token.hpp token.cpp
-  lexer.hpp lexer.cpp)
+  lexer.hpp lexer.cpp
+  parser.hpp parser.cpp
+  VirtualMachine.hpp VirtualMachine.cpp)
 
 # add source for any additional gui modules here
 set(UI_SOURCE
@@ -12,7 +14,9 @@ set(UI_SOURCE
 
 # add source for any additional unit tests here
 set(LIB_TEST_SOURCE
-  lexer_test.cpp)
+  lexer_test.cpp
+ parser_test.cpp 
+VirtualMachine_test.cpp)
 
 # add source for simmips program here
 set(SIMMIPS_SOURCE simmips.cpp)
