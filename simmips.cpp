@@ -25,13 +25,13 @@ int n1 = 0;
 void run_function()
 {
 	int mode = 0;
-	
-	int n = machine.instructions.size();
+
+
 	while (machine.status.empty())
 	{
-		n1++;
+		
 		machine.executing_instr();
-		if (n1 >= n)
+		if (machine.line2>= machine.instructions.size())
 			break;
 		if (vec.size() != 0)
 		{
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 		machine.saving_instr(tl11);
 		inFile.close();
 
-		
+		int er = 0;
 
 		while (true)
 		{
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 			getline(cin, value);
 			if (value == "step"&&machine.status.empty())
 			{
-				n1++;
+				
 				machine.executing_instr();
 				cerr << "0x" << setfill('0') << setw(8) << hex << machine.line2 << endl;
 			}
@@ -180,13 +180,14 @@ int main(int argc, char *argv[])
 				}
 				else if (value == "run")
 				{
-					
+					er = 1;
 					thread t1(&run_function);
 					t1.detach();
 				}
 				else if (value == "break")
 				{
-					vec.append("break");
+					if (er == 1)
+						vec.append("break");
 				}
 				else
 					cerr << "Error here.\n";
