@@ -23,6 +23,7 @@ private slots:
   void test8();
   void test9();
   void test10();
+  void test11();
 private:
 
   VirtualMachineGUI widget;
@@ -48,6 +49,12 @@ void VirtualMachineGUITest::initTestCase(){
 
 		auto stepButtonWidget = widget.findChild<QPushButton *>("step");
 		QVERIFY2(stepButtonWidget, "Could not find QTableView widget for memory");
+
+		auto stepButtonWidget2 = widget.findChild<QPushButton *>("run");
+		QVERIFY2(stepButtonWidget2, "Could not find QTableView widget for memory");
+
+		auto stepButtonWidget3 = widget.findChild<QPushButton *>("break");
+		QVERIFY2(stepButtonWidget3, "Could not find QTableView widget for memory");
 	
 
 }
@@ -184,6 +191,26 @@ void VirtualMachineGUITest::test10()
 	s = widget2.status->text();
 	string h = s.toStdString();
 	int y = widget2.memory->columnWidth(0);
+	{ QVERIFY(h == "Ok"); }
+	{ QVERIFY(y == 100); }
+}
+void VirtualMachineGUITest::test11()
+{
+	VirtualMachineGUI widget2;
+	widget2.load(QString::fromStdString(TEST_FILE_DIR + "/vm/test10.asm"));
+	widget2.handleButtonrun();
+
+	widget2.handleButtonbreak();
+	QString s;
+	s = widget2.status->text();
+	string h = s.toStdString();
+	int y = widget2.memory->columnWidth(0);
+	{ QVERIFY(h == "Ok"); }
+	{ QVERIFY(y == 100); }
+	widget2.handleButton();
+	s = widget2.status->text();
+	 h = s.toStdString();
+	y = widget2.memory->columnWidth(0);
 	{ QVERIFY(h == "Ok"); }
 	{ QVERIFY(y == 100); }
 }
