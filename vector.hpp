@@ -20,12 +20,7 @@ public:
 		lock_guard<mutex>lock(the_mutex);
 		return the_vec;
 	}
-	T operator[](size_t index)
-	{
-		lock_guard<mutex>lock(the_mutex);
-		if (index < the_vex.size())
-			return the_vec[index];
-	}
+	
 	size_t size()
 	{
 		lock_guard<mutex>lock(the_mutex);
