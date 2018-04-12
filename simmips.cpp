@@ -29,10 +29,10 @@ void run_function()
 
 	while (machine.status.empty())
 	{
+		
+		machine.executing_instr();
 		if (machine.line2>= machine.instructions.size())
 			break;
-		else
-			machine.executing_instr();
 		if (vec.size() != 0)
 		{
 			vec.the_vec.clear();
@@ -178,20 +178,16 @@ int main(int argc, char *argv[])
 					else
 						cerr << "Error : unknown command.\n";
 				}
-				else if (value == "run"&&machine.status.empty())
+				else if (value == "run")
 				{
 					er = 1;
 					thread t1(&run_function);
 					t1.detach();
-					cout << machine.status << endl;
 				}
 				else if (value == "break")
 				{
 					if (er == 1)
-					{
 						vec.append("break");
-					}
-
 				}
 				else
 					cerr << "Error here.\n";
