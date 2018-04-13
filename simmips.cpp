@@ -20,13 +20,10 @@ bool is_file_exist(string fileName)
 	return infile.good();
 }
 OutputVector<string> vec;
-VirtualMachine machine;
-int n1 = 0;
-void run_function()
+
+void run_function(VirtualMachine machine)
 {
 	int mode = 0;
-
-
 	while (machine.status.empty())
 	{
 		
@@ -96,7 +93,7 @@ int main(int argc, char *argv[])
 		}
 		istringstream iss(sum);
 		TokenList tl1 = tokenize(iss);
-
+		VirtualMachine machine;
 		machine.setting_data_values(tl1);
 		sum.clear();
 		while (getline(inFile, input))
@@ -127,7 +124,6 @@ int main(int argc, char *argv[])
 				break;
 			else
 			{
-
 				if (value.substr(0, 6) == "print "&&mode2 == 0)
 				{
 					value.erase(0, 6);
@@ -182,7 +178,7 @@ int main(int argc, char *argv[])
 				{
 					er = 1;
 					mode2 = 1;
-					thread t1(&run_function);
+					thread t1(&run_function, machine);
 					t1.detach();
 				}
 				else if (value == "break")

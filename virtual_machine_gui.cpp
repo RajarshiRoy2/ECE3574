@@ -15,7 +15,7 @@ VirtualMachineGUI::VirtualMachineGUI(QWidget *parent) : QWidget(parent)
 	registers->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	registers->setObjectName("registers");
 	registers->verticalHeader()->setVisible(false);
-	QStandardItemModel *model = new QStandardItemModel(34, 3);
+	model = new QStandardItemModel(34, 3);
 	model->setHeaderData(0, Qt::Horizontal, tr("Number"));
 	model->setHeaderData(1, Qt::Horizontal, tr("Alias"));
 	model->setHeaderData(2, Qt::Horizontal, tr("Value(Hex)"));
@@ -66,7 +66,27 @@ VirtualMachineGUI::VirtualMachineGUI(QWidget *parent) : QWidget(parent)
 	memory = new QTableView;
 	memory->setObjectName("memory");
 	memory->verticalHeader()->setVisible(false);
-
+	mode = new QStandardItemModel(512, 2);
+	mode->setHeaderData(0, Qt::Horizontal, tr("Address(Hex)"));
+	mode->setHeaderData(1, Qt::Horizontal, tr("Value(Hex)"));
+	memory->setModel(mode);
+	memory->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	for (int i = 0; i < 512; i++)
+	{
+		stringstream stream3;
+		stream3 << "0x" << setw(8) << setfill('0') << hex << i;
+		string result3(stream3.str());
+		QString qst123 = QString::fromStdString(result3);
+		QStandardItem *item123 = new QStandardItem(qst123);
+		mode->setItem(i, 0, item123);
+			stringstream stream4;
+			stream4 << "0x" // show the 0x prefix
+				<< "0" << hex << 0 << endl;
+			string result45(stream4.str());
+			QString qs = QString::fromStdString(result45);
+			QStandardItem *item45 = new QStandardItem(qs);
+			mode->setItem(i, 1, item45);
+	}
 	status = new QLineEdit;
 	status->setReadOnly(true);
 	status->setObjectName("status");
@@ -198,7 +218,7 @@ void VirtualMachineGUI::load(QString name)
 		//text->moveCursor(QTextCursor::Start);
 		//text->textCursor().mergeCharFormat(format);
 
-		QStandardItemModel *mode = new QStandardItemModel(512, 2);
+		
 		mode->setHeaderData(0, Qt::Horizontal, tr("Address(Hex)"));
 		mode->setHeaderData(1, Qt::Horizontal, tr("Value(Hex)"));
 		memory->setModel(mode);
@@ -315,7 +335,7 @@ void VirtualMachineGUI::handleButtonbreak()
 void VirtualMachineGUI::run2()
 {
 	
-	QStandardItemModel *model = new QStandardItemModel(34, 3);
+	
 	model->setHeaderData(0, Qt::Horizontal, tr("Number"));
 	model->setHeaderData(1, Qt::Horizontal, tr("Alias"));
 	model->setHeaderData(2, Qt::Horizontal, tr("Value(Hex)"));
@@ -364,7 +384,7 @@ void VirtualMachineGUI::run2()
 	QStandardItem *item12 = new QStandardItem(qst12);
 	model->setItem(2, 2, item12);
 
-	QStandardItemModel *mode = new QStandardItemModel(512, 2);
+	
 	mode->setHeaderData(0, Qt::Horizontal, tr("Address(Hex)"));
 	mode->setHeaderData(1, Qt::Horizontal, tr("Value(Hex)"));
 	memory->setModel(mode);

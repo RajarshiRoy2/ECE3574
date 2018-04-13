@@ -3,8 +3,6 @@
 #include <QTimer>
 #include <QString>
 #include <QWidget>
-#include <QThread>
-#include <QFuture>
 #include <QTextBlock>
 #include <string>
 #include <QPlainTextEdit>
@@ -53,6 +51,8 @@ public:
 	QPushButton * run;
 	QPushButton * break2;
 	VirtualMachine machine;
+	QStandardItemModel *model;
+	QStandardItemModel *mode;
 	void handleResults();
 	
 	QString qstr1;
