@@ -110,12 +110,12 @@ int main(int argc, char *argv[])
 		inFile.close();
 
 		int er = 0;
-
+		int mode2 = 0;
 		while (true)
 		{
 			cerr << "simmips> ";
 			getline(cin, value);
-			if (value == "step"&&machine.status.empty())
+			if (value == "step"&&machine.status.empty() && mode2 == 0)
 			{
 				
 				machine.executing_instr();
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
 			else
 			{
 
-				if (value.substr(0, 6) == "print ")
+				if (value.substr(0, 6) == "print "&&mode2 == 0)
 				{
 					value.erase(0, 6);
 					if (value[0] == '&')
@@ -178,16 +178,24 @@ int main(int argc, char *argv[])
 					else
 						cerr << "Error : unknown command.\n";
 				}
-				else if (value == "run")
+				else if (value == "run"&&mode2==0)
 				{
 					er = 1;
+					mode2 = 1;
 					thread t1(&run_function);
 					t1.detach();
 				}
 				else if (value == "break")
 				{
 					if (er == 1)
+					{
 						vec.append("break");
+						mode2 = 0;
+					}
+				}
+				else if ((value.substr(0, 6) == "print " || value == "step") && mode2 == 1)
+				{
+					cerr << "Error: simulation running. Type break to halt.\n";
 				}
 				else
 					cerr << "Error here.\n";

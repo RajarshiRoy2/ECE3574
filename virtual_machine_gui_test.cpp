@@ -75,12 +75,17 @@ void VirtualMachineGUITest::test2()
 void VirtualMachineGUITest::test3()
 {
 	VirtualMachineGUI widget2;
-	widget2.load(QString::fromStdString(TEST_FILE_DIR + "/vm/test00.asm"));
+	widget2.load(QString::fromStdString(TEST_FILE_DIR + "/vm/test01.asm"));
 	widget2.handleButton();
 	//qDebug("\nstd out!");
 	QString s;
 	s = widget2.status->text();
 	string h = s.toStdString();
+	auto memory = widget2.memory;
+	auto memmodel = memory->model();
+
+	// this fails
+	QVERIFY(memmodel->data(memmodel->index(8, 1)).toString().startsWith("0x01"));
 	//qDebug() << s;
 	{ QVERIFY(h == "Ok"); }
 }
