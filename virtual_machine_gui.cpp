@@ -171,7 +171,7 @@ void VirtualMachineGUI::load(QString name)
 			qstr2 = QString::fromStdString(parser.my_error());
 			status->setText(qstr2);
 		}
-			sum.clear();//deciding factor
+			//sum.clear();//deciding factor
 		inFile.open(str);
 		while (getline(inFile, input))
 		{
