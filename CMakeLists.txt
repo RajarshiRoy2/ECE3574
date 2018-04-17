@@ -59,6 +59,9 @@ include_directories(${CMAKE_BINARY_DIR})
 
 # executables
 add_executable(unit_tests catch.hpp unit_tests.cpp ${LIB_TEST_SOURCE} ${LIB_SOURCE})
+if(UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
+  target_link_libraries(unit_tests pthread)
+endif()
 
 add_executable(virtual_machine_gui_test ${UI_TEST_SOURCE} ${UI_SOURCE} ${LIB_SOURCE})
 if(UNIX AND NOT APPLE AND CMAKE_COMPILER_IS_GNUCXX)
